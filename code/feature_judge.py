@@ -27,89 +27,6 @@ def peakvalley(ts_analyze): # 数据的波峰波谷
             index_peakvalley.append(i)
     print('--波峰波谷个数：%s' % (peakvalley))
     return index_peakvalley
-def trend_features_inputdatafromjson(inputfile_name):
-    # 判断准则从 jason 文件中读取 ： inputfile_name
-    with open(inputfile_name, 'r', encoding='utf8')as fp:
-        json_data = json.load(fp)
-        print('这是文件中的json数据：', json_data)
-        print('这是读取到文件数据的数据类型：', type(json_data))
-
-    # 波动性判断滤波准则
-    rolmean_window4vibrate = json_data['rolmean_window4vibrate']  # type：int; 降噪平均的滑窗窗口长度,不能超过数据个数，用于判断震动，建议给的小一些
-    # 单调性判断滤波准则
-    rolmean_window4monotonicity = json_data[
-        'rolmean_window4monotonicity']  # type：int; 降噪平均的滑窗窗口长度,不能超过数据个数，用于判断单调性，可适当稍大
-    monotonicity_peakvalleys=json_data['monotonicity_peakvalleys'] # type：int; 单调性加窗滤波后，单调性序列允许的最大波峰波谷数（该值取1，表示严格单调）
-    ADF_pvalue = json_data['ADF_pvalue']  # type：float;ADF 检验时得p-value
-
-    S04_std_lower = json_data['S04']['std_lower']  # type：float; 判断是否稳定不变时用到得方差上限
-
-    S12_vibrate_range = json_data['S12']['vibrate_range']  # type：float; 判定为震荡时用到得四分位距下限（四分位距相对于均值的百分比）
-    S12_vibrate_rate = json_data['S12']['vibrate_rate']  # type：float; 振荡条件时，波峰波谷数目占总数据点数的比例（滤去小波后）
-
-    S11_drop_range = json_data['S11']['drop_range']  # type：float; 波动下降时，下降幅度（起点减终点绝对值）占起点绝对值的比例应大于这个数
-    S11_vibrate_rate = json_data['S11']['vibrate_rate']  # type：float; 波动下降时，波峰波谷数目占总数据点数的比例（滤去小波后）
-
-    S10_rise_range = json_data['S10']['rise_range']  # type：float; 波动上升时，下降幅度（起点减终点绝对值）占起点绝对值的比例应大于这个数
-    S10_vibrate_rate = json_data['S10']['vibrate_rate']  # type：float; 波动上升时，波峰波谷数目占总数据点数的比例（滤去小波后）
-
-    S07_drop_range = json_data['S07']['drop_range']  # type：float; 单调快速下降时，下降幅度（起点减终点绝对值）占起点绝对值的比例应大于这个数
-    S05_drop_range = json_data['S05']['drop_range']  # type：float; 单调缓慢下降时，下降幅度（起点减终点绝对值）占起点绝对值的比例应小于这个数
-
-    S01_rise_range = json_data['S01']['rise_range']  # type：float; 单调快速上升时，上升幅度（起点减终点绝对值）占起点绝对值的比例应大于这个数
-    S03_rise_range = json_data['S03']['rise_range']  # type：float; 单调缓慢上升时，上升幅度（起点减终点绝对值）占起点绝对值的比例应小于这个数
-
-    S08_location_range = json_data['S08']['range']  # type:floatlist; 单凸峰值所处的相对位置
-    S09_location_range = json_data['S09']['range']  # type:floatlist; 单凹峰值所处的相对位置
-
-    trend_features_inputdata= {
-                'rolmean_window4vibrate': rolmean_window4vibrate,
-                'rolmean_window4monotonicity':rolmean_window4monotonicity,
-                'monotonicity_peakvalleys':monotonicity_peakvalleys,
-                'ADF_pvalue':ADF_pvalue,
-                'S04_std_lower':S04_std_lower,
-                'S12_vibrate_range':S12_vibrate_range,
-                'S12_vibrate_rate':S12_vibrate_rate,
-                'S11_drop_range':S11_drop_range,
-                'S11_vibrate_rate':S11_vibrate_rate,
-                'S10_rise_range':S10_rise_range,
-                'S10_vibrate_rate':S10_vibrate_rate,
-                'S07_drop_range':S07_drop_range,
-                'S05_drop_range':S05_drop_range,
-                'S01_rise_range':S01_rise_range,
-                'S03_rise_range':S03_rise_range,
-                'S08_location_range':S08_location_range,
-                'S09_location_range':S09_location_range
-                }
-    return trend_features_inputdata
-
-def threshold_features_inputdatafromjson(inputfile_name):
-    # 判断准则从 jason 文件中读取 ： inputfile_name
-    with open(inputfile_name, 'r', encoding='utf8')as fp:
-        json_data = json.load(fp)
-        print('这是文件中的json数据：', json_data)
-        print('这是读取到文件数据的数据类型：', type(json_data))
-
-    T03_range = [json_data['T03']['lower'], json_data['T03']['upper']]   #高高高
-    T02_range = [json_data['T02']['lower'], json_data['T02']['upper']]   # 高高
-    T01_range = [json_data['T01']['lower'], json_data['T01']['upper']]   # 高
-    T04_range = [json_data['T04']['lower'], json_data['T04']['upper']]   #低
-    T05_range = [json_data['T05']['lower'], json_data['T05']['upper']]   #低低
-    T06_range = [json_data['T06']['lower'], json_data['T06']['upper']]   #低低低
-
-    # 若不落在以上区域中，均为正常
-    T_used=json_data['T_used']
-
-    threshold_features_inputdata = {
-                    'T03_range': T03_range,
-                    'T02_range': T02_range,
-                    'T01_range': T01_range,
-                    'T04_range': T04_range,
-                    'T05_range': T05_range,
-                    'T06_range': T06_range,
-                    'T_used':T_used
-                                }
-    return threshold_features_inputdata
 
 def trend_features(df_analyze,valuename,trend_features_inputdata,DPlot_dir,Dplot):
     # 判断准则 ： trend_features_inputdata
@@ -145,7 +62,7 @@ def trend_features(df_analyze,valuename,trend_features_inputdata,DPlot_dir,Dplot
 
     ts_numeric = pd.to_numeric(df_analyze[valuename])
     print('==>>>用于趋势判断的时序数据：')
-    tsinfo = ts_info(ts_numeric)
+    # tsinfo = ts_info(ts_numeric)
     if Dplot == 'yes': timeseries_plot(ts_numeric, 'g', valuename+'_oir', pathsave=DPlot_dir)
 
     s_tf = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
