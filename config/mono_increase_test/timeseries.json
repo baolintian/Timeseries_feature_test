@@ -9,7 +9,7 @@
     "trend_range_day": 60,
     "id_monitor": "1RCP604MP",
     "threshold_range_day": 0.01,
-    "resample_fre": 1440,
+    "resample_fre": 60,
     "rolmean_window4vibrate": 3,
     "rolmean_window4monotonicity": 40,
     "monotonicity_peakvalleys": 20,

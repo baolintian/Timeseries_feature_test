@@ -60,7 +60,7 @@ def trend_features(df_analyze,valuename,trend_features_inputdata,DPlot_dir,Dplot
     S08_location_range = trend_features_inputdata['S08_location_range']  # type:floatlist; 单凸峰值所处的相对位置
     S09_location_range = trend_features_inputdata['S09_location_range']  # type:floatlist; 单凹峰值所处的相对位置
 
-    ts_numeric = pd.to_numeric(df_analyze[valuename])
+    ts_numeric = pd.to_numeric(df_analyze)
     print('==>>>用于趋势判断的时序数据：')
     # tsinfo = ts_info(ts_numeric)
     if Dplot == 'yes': timeseries_plot(ts_numeric, 'g', valuename+'_oir', pathsave=DPlot_dir)
@@ -224,7 +224,7 @@ def threshold_features(df_analyze,valuename,threshold_features_inputdata,DPlot_d
 
     t_tf = [0, 0, 0, 0, 0, 0]
 
-    ts_numeric = pd.to_numeric(df_analyze[valuename])
+    ts_numeric = pd.to_numeric(df_analyze)
     print('==>>>用于阈值判断的时序数据：')
     tsinfo = ts_info(ts_numeric)
     # 阈值判断区间是否合理
@@ -253,7 +253,7 @@ def threshold_features(df_analyze,valuename,threshold_features_inputdata,DPlot_d
             print('Error：检查各失效阈值的判定区间是否满足规律要求！（T3>T2>T1>T4>T5>T6）')
             os._exit()
     mean_value = np.mean(df_analyze)
-    mean_value =mean_value.values[0]
+
     if not T_used[3-1] == 0:
         if mean_value >= T03_range[0] and mean_value <= T03_range[1]:
             t_tf[3-1]=1

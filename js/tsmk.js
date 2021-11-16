@@ -2,6 +2,26 @@
 var divWidth = $('#canvas').width();
 var divHeight = divWidth/2.5;
 
+/* 将时间戳格式化为yyyy-MM-dd hh:mm:ss格式，其它格式可自行更改 */
+function formatTimeMills(timeMills){
+    var date = new Date(timeMills);
+	var timeStr = date.getFullYear() + "-";
+	if (date.getMonth() < 9)
+    { // 月份从0开始的
+		timeStr += '0';
+	}
+	timeStr += date.getMonth() + 1 + "-";
+	timeStr += date.getDate() < 10 ? ('0' + date.getDate()) : date.getDate();
+	timeStr += ' ';
+	timeStr += date.getHours() < 10 ? ('0' + date.getHours()) : date.getHours();
+	timeStr += ':';
+	timeStr += date.getMinutes() < 10 ? ('0' + date.getMinutes()) : date.getMinutes();
+	timeStr += ':';
+	timeStr += date.getSeconds() < 10 ? ('0' + date.getSeconds()) : date.getSeconds();
+	return timeStr;
+}
+
+
 function create_canvas(start_time, end_time, y_low, y_up, y_type){
 
 	// Define the margin and sizes of the plotting area
@@ -211,6 +231,7 @@ $(document).ready(function () {
 	    var csv = 'time'+colDelim+'value'+rowDelim;
 	    drawObj.dataPoints.map(function(v, i){
 		    var t = x.invert(v[0]);
+		    t = formatTimeMills(new Date(t))
 		    var val = y.invert(v[1]);
 		    csv += t+colDelim+val+rowDelim;
 	    });

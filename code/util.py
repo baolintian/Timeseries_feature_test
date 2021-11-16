@@ -166,9 +166,9 @@ def read_config(config_path):
         'T06_range': T06_range,
         'T_used': T_used
     }
-    return trend_config, threshold_config
+    return trend_config, threshold_config, timeseries_config_raw["resample_fre"]
 
-def read_timeseries(timeseries_path):
+def read_timeseries(timeseries_path, resample_frequency):
     timestamp = []
     timeseries_value = []
 
@@ -183,4 +183,7 @@ def read_timeseries(timeseries_path):
                 timeseries_value.append(eval(values[1]))
 
     df_analyze = pd.DataFrame(data=timeseries_value, index=timestamp, columns=[timeseries_name])
+
+    df_analyze = pd.Series(df_analyze.iloc[:, 0].values, index=pd.DatetimeIndex(df_analyze.index))
+    df_analyze = df_analyze.resample(resample_frequency).mean().ffill()
     return df_analyze
