@@ -1,0 +1,25 @@
+{
+  "rolmean_window4vibrate": 3,
+  "rolmean_window4monotonicity": 4000,
+  "S04": {"std_lower": 0.05},
+  "S12": {
+    "vibrate_range": 0.1,
+    "vibrate_rate": 0.05
+  },
+  "S11": {
+    "drop_range": 0.1,
+    "vibrate_rate": 0.09
+  },
+  "S10": {
+    "rise_range": 0.1,
+    "vibrate_rate": 0.05
+  },
+  "S01": {"rise_range": 0.05},
+  "S02": {},
+  "S03": {"rise_range": 0.01},
+  "S05": {"drop_range": 0.04},
+  "S06": {},
+  "S07": {"drop_range": 0.05},
+  "S08": {"range": [0.1, 0.9]},
+  "S09": {"range": [0.1, 0.9]}
+}
