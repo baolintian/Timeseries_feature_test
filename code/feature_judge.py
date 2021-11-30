@@ -22,7 +22,7 @@ def peakvalley(ts_analyze): # 数据的波峰波谷
     index_peakvalley=[]
     for i in range(num - 1):
         mult = diff1[i] * diff1[i + 1]
-        if mult <= 0:
+        if mult < 0:
             peakvalley = peakvalley + 1
             index_peakvalley.append(i)
     print('--波峰波谷个数：%s' % (peakvalley))
